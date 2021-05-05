@@ -1,0 +1,62 @@
+<form *ngIf="state === 1" [formGroup]="form">
+  <vaadin-progress-bar indeterminate value="0" *ngIf="isLoading"></vaadin-progress-bar>
+  <vaadin-form-layout>
+    <vaadin-list-box
+      [selected]="form.get('userTypeIndex')?.value"
+      colspan="2"
+      (selected-changed)="selectionChanged($event, 'userTypeIndex')"
+    >
+      <vaadin-item value="CUSTOMER">Estou procurando um serviço</vaadin-item>
+      <vaadin-item value="PROFESIONAL">Sou empresa prestadora de serviço</vaadin-item>
+      <vaadin-item value="COMPANY">Sou autônomo(a) prestador(a) de serviço</vaadin-item>
+    </vaadin-list-box>
+    <ng-container *ngIf="form.get('userTypeIndex')?.value > 0">
+      <vaadin-text-field
+        colspan="2"
+        placeholder="Busque uma atividade"
+        formControlName="workType"
+        clear-button-visible
+        ngDefaultControl
+        (keypress)="keyPress($event)"
+      >
+        <iron-icon icon="vaadin:search" slot="prefix"></iron-icon
+      ></vaadin-text-field>
+      <vaadin-list-box colspan="2" class="select-list-scroll" (selected-changed)="selectionChanged($event)">
+        <vaadin-item *ngFor="let workType of workTypes$ | async">
+          {{ workType.name }}
+        </vaadin-item>
+      </vaadin-list-box>
+    </ng-container>
+    <vaadin-text-field
+      colspan="2"
+      formControlName="name"
+      required
+      error-message="Insira um valor válido"
+      label="Nome"
+      clear-button-visible
+      ngDefaultControl
+    ></vaadin-text-field>
+    <vaadin-email-field
+      colspan="2"
+      formControlName="email"
+      required
+      error-message="Insira um valor válido"
+      label="Email"
+      clear-button-visible
+      ngDefaultControl
+    ></vaadin-email-field>
+    <vaadin-button colspan="2" ngDefaultControl (click)="submit()" theme="primary" [disabled]="!isFormValid">
+      Enviar
+    </vaadin-button>
+  </vaadin-form-layout>
+</form>
+<div *ngIf="state === 2" class="success">
+  <h2>Quase lá!</h2>
+  <p>
+    Enviamos um email para <b>{{ form.get('email')?.value }}</b> com as instruções necessárias para finalizar seu
+    cadastro.
+  </p>
+  <vaadin-button ngDefaultControl (click)="submit()" theme="primary" (click)="goToLogin()">
+    Ir para tela de login
+  </vaadin-button>
+</div>

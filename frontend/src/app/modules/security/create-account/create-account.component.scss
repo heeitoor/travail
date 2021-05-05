@@ -1,0 +1,22 @@
+.success {
+  color: var(--lumo-secondary-text-color);
+  font-family: var(--lumo-font-family);
+  background-color: hsla(214, 57%, 24%, 0.1);
+  padding: 40px 25px;
+  border-radius: 10px;
+  h2 {
+    margin-top: 0;
+  }
+  p {
+    font-size: 18px;
+  }
+}
+
+vaadin-item[aria-selected='true'] {
+  font-weight: 600;
+}
+
+.select-list-scroll {
+  max-height: 148px;
+  overflow-y: scroll;
+}
