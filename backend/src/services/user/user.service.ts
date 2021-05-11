@@ -45,7 +45,7 @@ export class UserService {
       updatedAt: new Date(),
     });
 
-    await this.sendMail(user, confirmationCode);
+    //await this.sendMail(user, confirmationCode);
   }
 
   async update(user: User): Promise<void> {
