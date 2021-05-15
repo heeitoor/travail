@@ -9,6 +9,8 @@
     "node": "14.16.0"
   },
   "scripts": {
+    "build": "nest build --path backend/tsconfig.build.json",
+    "build:back": "nest build --path backend/tsconfig.build.json"
   },
   "dependencies": {
     "@nestjs/common": "^7.6.15",
