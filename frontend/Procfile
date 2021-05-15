@@ -1,2 +1,2 @@
-web: npm run build:front --prefix ./frontend
+web: ng build
 web: npm run start:front:prod --prefix ./frontend
