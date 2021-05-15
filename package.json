@@ -10,7 +10,7 @@
   },
   "scripts": {
     "pre:build": "ng build",
-    "build": "nest build --path backend/tsconfig.build.json",
+    "build": "nest build --path backend/tsconfig.build.json"
   },
   "dependencies": {
     "@nestjs/common": "^7.6.15",
