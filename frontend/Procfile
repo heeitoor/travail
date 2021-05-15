@@ -1,1 +1,2 @@
-web: npm run start:prod
+web: npm run build:front --prefix ./frontend
+web: npm run start:front:prod --prefix ./frontend
