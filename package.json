@@ -9,7 +9,7 @@
     "node": "14.16.0"
   },
   "scripts": {
-    "heroku-postbuild": "printenv"
+    "heroku-postbuild": "if [ \"$USER\" = \"api\" ]; then nest build --path backend/tsconfig.build.json; else echo 'nope!'; fi"
   },
   "dependencies": {
     "@nestjs/common": "^7.6.15",
