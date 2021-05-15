@@ -9,13 +9,13 @@
     "node": "14.16.0"
   },
   "scripts": {
-    "build": "nest build --path backend/tsconfig.build.json",
+    "build:back": "nest build --path backend/tsconfig.build.json",
     "build:front": "ng build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node backend/dist/main",
+    "start:back:prod": "node backend/dist/main",
     "start:front:prod": "serve frontend/dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
