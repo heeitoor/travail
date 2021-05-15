@@ -1,2 +1,1 @@
-web: npm run build --prefix ./backend
 web: npm run start:prod --prefix ./backend
