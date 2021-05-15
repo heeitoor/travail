@@ -61,7 +61,6 @@
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.2.3",
     "sinon": "10.0.0",
-
     "@angular-devkit/build-angular": "0.1102.2",
     "@angular/cli": "11.2.2",
     "@angular/compiler-cli": "11.2.3",
