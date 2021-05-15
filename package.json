@@ -9,7 +9,7 @@
     "node": "14.16.0"
   },
   "scripts": {
-    "build": ""
+    "heroku-postbuild": "printenv"
   },
   "dependencies": {
     "@nestjs/common": "^7.6.15",
