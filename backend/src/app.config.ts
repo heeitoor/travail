@@ -10,6 +10,7 @@ const appConfig = {
   SENDGRID_DEFAULT_SENDER: process.env.SENDGRID_DEFAULT_SENDER,
   CLOUDAMQP_URL: process.env.CLOUDAMQP_URL,
   WEB_URL: process.env.WEB_URL,
+  REDISCLOUD_URL: process.env.REDISCLOUD_URL,
 };
 
 interface KnexConfig {

@@ -14,16 +14,18 @@ import { HttpExceptionFilter } from './shared/exception-filter';
 import { APP_FILTER } from '@nestjs/core';
 import { SignOnConsumer } from './queue/signon-consumer';
 import { SecurityMiddleware } from '././middlewares/security.middleware';
+import { RedisService } from './shared/redis';
 
 const services = [UserService, WorkService];
 const repositories = [UserRepository, UserRecoverRepository, WorkRepository];
 const consumers = [SignOnConsumer];
+const commonService = [MailService, RedisService];
 
 @Module({
   imports: [TerminusModule],
   controllers: [AppController, ServiceController, UserController, HealthController],
   providers: [
-    MailService,
+    ...commonService,
     ...services,
     ...repositories,
     ...consumers,
