@@ -167,6 +167,13 @@
     tslib "^2.1.0"
     yargs "^16.2.0"
 
+"@angular/compiler@~12.0.0":
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-12.0.0.tgz#bb0d4f464fee4803dbda49d862474f771c31f633"
+  integrity sha512-7NdZNyxm9KLlRMmmtId6RfV6VbQIUMDxN44R+ax66BoWsuhdYXUDsDO554LwYwrjnnXXGkurDJhv7umeRwaZGw==
+  dependencies:
+    tslib "^2.1.0"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13":
   version "7.12.13"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.12.13.tgz#dcfc826beef65e75c50e21d3837d7d95798dd658"
