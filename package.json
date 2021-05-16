@@ -14,6 +14,7 @@
     "heroku-postbuild": "if [ \"$project\" = \"api\" ]; then npm run build --prefix backend; else npm run build --prefix frontend; fi"
   },
   "dependencies": {
+    "@angular/compiler": "~12.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "12.0.0",
