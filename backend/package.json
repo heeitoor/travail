@@ -15,7 +15,6 @@
     "yarn": "1.22.10"
   },
   "scripts": {
-    "prebuild": "rimraf dist",
     "build": "yarn install; nest build --path tsconfig.build.json",
     "start:prod": "node dist/src/main",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
