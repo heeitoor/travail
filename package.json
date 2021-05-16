@@ -11,7 +11,7 @@
     "yarn": "1.22.10"
   },
   "scripts": {
-    "heroku-postbuild": "if [ \"$project\" = \"api\" ]; npm run build --prefix backend; else npm run build --prefix frontend; fi"
+    "heroku-postbuild": "if [ \"$project\" = \"api\" ]; then npm run build --prefix backend; else npm run build --prefix frontend; fi"
   },
   "dependencies": {
   },
