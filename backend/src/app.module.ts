@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
 import { AppController } from './app.controller';
 import { ServiceController } from './controllers/service/service.controller';
@@ -13,6 +13,7 @@ import { HealthController } from './controllers/health/health.controller';
 import { HttpExceptionFilter } from './shared/exception-filter';
 import { APP_FILTER } from '@nestjs/core';
 import { SignOnConsumer } from './queue/signon-consumer';
+import { SecurityMiddleware } from '././middlewares/security.middleware';
 
 const services = [UserService, WorkService];
 const repositories = [UserRepository, UserRecoverRepository, WorkRepository];
@@ -32,4 +33,14 @@ const consumers = [SignOnConsumer];
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  async configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(SecurityMiddleware)
+      .exclude({ path: 'user/login', method: RequestMethod.POST }, { path: '/health', method: RequestMethod.GET })
+      .forRoutes({
+        path: '*',
+        method: RequestMethod.ALL,
+      });
+  }
+}

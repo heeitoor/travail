@@ -14,7 +14,7 @@ export function decrypt(value: string): string {
 }
 
 export function generateToken(payload: any): string {
-  return sign(payload, PRIVATE_KEY);
+  return sign(payload, PRIVATE_KEY, { expiresIn: '15m' });
 }
 
 export function validateToken(jwt: string): boolean {
