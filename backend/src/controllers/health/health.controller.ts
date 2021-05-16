@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheck, HealthCheckService, HealthIndicatorResult, HttpHealthIndicator } from '@nestjs/terminus';
+import { connect } from 'amqplib';
 import knex from 'knex';
 import { appConfig, KnexConfig } from 'src/app.config';
 import * as knexConfig from '../../../knexfile';
@@ -14,7 +15,10 @@ export class HealthController {
     return this.health.check([
       () => {
         return new Promise<HealthIndicatorResult>(async (res, rej) => {
-          let item: HealthIndicatorResult = { database: { status: 'down' } };
+          let item: HealthIndicatorResult = {
+            database: { status: 'down' },
+            rabbitmq: { status: 'down' },
+          };
 
           try {
             const config = knexConfig as KnexConfig;
@@ -23,6 +27,20 @@ export class HealthController {
 
             if (id) {
               item['database'].status = 'up';
+            }
+          } catch (error) {}
+
+          try {
+            const { connection } = await connect(appConfig.CLOUDAMQP_URL);
+
+            //@ts-ignore
+            const authorized = connection?.stream?.authorized;
+
+            if (authorized && authorized === true) {
+              item['rabbitmq'].status = 'up';
+
+              // @ts-ignore
+              connection.close();
             }
           } catch (error) {}
 
