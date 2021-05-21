@@ -7,7 +7,8 @@ import { CrobJobSchedule, CronWorker } from './workers/cron-worker';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  app.setGlobalPrefix('api');
+  app.enableCors()
   const config = new DocumentBuilder()
     .setTitle('Travail')
     .setDescription('Travail API')

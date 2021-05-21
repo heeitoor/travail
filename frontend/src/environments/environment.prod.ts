@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUrl: 'http://travail-api.herokuapp.com/api',
+  useSsl: true,
 };

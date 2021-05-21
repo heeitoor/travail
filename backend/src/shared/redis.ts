@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { RedisClient, createClient, print } from 'redis';
 import { appConfig } from 'src/app.config';
 import { promisify } from 'util';
@@ -40,7 +41,7 @@ class RedisService {
 
   private ensureConnection() {
     if (!this.client) {
-      throw new Error('Invalid redis');
+      throw new BadRequestException('Invalid redis');
     }
   }
 

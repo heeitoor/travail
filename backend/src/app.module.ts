@@ -15,6 +15,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { SignOnConsumer } from './queue/signon-consumer';
 import { SecurityMiddleware } from '././middlewares/security.middleware';
 import { RedisService } from './shared/redis';
+import { ErrorMiddleware } from './middlewares/error.middleware';
 
 const services = [UserService, WorkService];
 const repositories = [UserRepository, UserRecoverRepository, WorkRepository];
@@ -39,7 +40,7 @@ export class AppModule implements NestModule {
   async configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(SecurityMiddleware)
-      .exclude({ path: 'user/login', method: RequestMethod.POST }, { path: '/health', method: RequestMethod.GET })
+      .exclude({ path: 'api/user/login', method: RequestMethod.POST }, { path: '/health', method: RequestMethod.GET })
       .forRoutes({
         path: '*',
         method: RequestMethod.ALL,

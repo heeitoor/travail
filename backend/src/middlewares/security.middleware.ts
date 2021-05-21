@@ -10,6 +10,7 @@ export class SecurityMiddleware implements NestMiddleware {
     if (!authHeader) {
       return res.status(401).json({ error: 'token not provided' });
     }
+    
     const [, token] = authHeader.split(' ');
 
     if (validateToken(token)) {
@@ -17,7 +18,5 @@ export class SecurityMiddleware implements NestMiddleware {
     } else {
       return res.status(401).json({ error: 'token invalid' });
     }
-
-    next();
   }
 }

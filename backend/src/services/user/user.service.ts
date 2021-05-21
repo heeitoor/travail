@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { User } from 'src/entities/user';
 import { UserRecoverType } from 'src/entities/user-recover';
 import { UserRecoverRepository } from 'src/repositories/user-recover.repository';
@@ -25,7 +25,7 @@ export class UserService {
     const validationResult = await this.validateUserEntity(user);
 
     if (!validationResult) {
-      throw new Error('Invalid values');
+      throw new BadRequestException('Invalid values');
     }
 
     await this.userRepository.db.transaction(async (trx) => {
@@ -40,7 +40,7 @@ export class UserService {
     const validationResult = await this.validateUserEntity(user);
 
     if (!validationResult) {
-      throw new Error('Invalid values');
+      throw new BadRequestException('Invalid values');
     }
 
     await this.userRepository.update(user);
@@ -54,7 +54,7 @@ export class UserService {
     const userRecover = await this.userRecoverRepository.getByConfirmationCode(confirmationCode);
 
     if (!userRecover || userRecover.type !== UserRecoverType.ACTIVATE) {
-      throw new Error();
+      throw new NotFoundException();
     }
 
     const user = await this.userRepository.getById(userRecover.userId);
@@ -70,7 +70,7 @@ export class UserService {
     const user = await this.userRepository.getByEmailAndPass(email, sha256(password));
 
     if (!user) {
-      throw new Error('Invalid values');
+      throw new NotFoundException('Invalid values');
     }
 
     const token = generateToken({ userId: user.id, name: user.name, type: user.type });
@@ -82,7 +82,7 @@ export class UserService {
 
   async recover(email: string): Promise<void> {
     if (!this.validateUserEmail(email)) {
-      throw new Error('Invalid email');
+      throw new BadRequestException('Invalid email');
     }
 
     await this.userRepository.db.transaction(async (trx) => {
@@ -96,7 +96,7 @@ export class UserService {
 
   async changePassword(userId: number, password: string) {
     if (!validatePassword(password)) {
-      throw new Error('Invalid password');
+      throw new BadRequestException('Invalid password');
     }
 
     const user = await this.userRepository.getById(userId);
