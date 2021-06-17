@@ -1,16 +1,15 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SecurityService } from 'src/app/services/security.service';
 
 import { Router } from '@angular/router';
 import { ComponentBase } from 'src/app/shared/component-base';
 import { CreateComponentState, CreateModel } from '../models';
 
-import { ListBoxElement } from '@vaadin/vaadin-list-box/vaadin-list-box';
 import { WorkTypeService } from 'src/app/services/work-type.service';
 import { SelectListItem, UserType } from 'src/app/shared/models';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { concat, Observable, of, Subject } from 'rxjs';
+import { catchError, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -20,7 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class CreateAccountComponent extends ComponentBase implements OnInit {
   form = new FormGroup({
-    userType: new FormControl('CUSTOMER', [Validators.required]),
+    userType: new FormControl(1, [Validators.required]),
     userTypeIndex: new FormControl(0, [Validators.required]),
     email: new FormControl('heitor22@travail.com', [Validators.email, Validators.required]),
     name: new FormControl('teste', [Validators.required]),
@@ -28,8 +27,28 @@ export class CreateAccountComponent extends ComponentBase implements OnInit {
     workTypeId: new FormControl('', []),
   });
   isLoading = false;
+  isWorkTypeLoading = false;
+  workTypes: SelectListItem[] = [];
   workTypes$ = new Observable<SelectListItem[]>();
+  workTypeInput$ = new Subject<string>();
   state = CreateComponentState.SHOW_FORM;
+  userTypeList = [
+    {
+      id: 1,
+      type: 'CUSTOMER',
+      description: 'Estou procurando um serviço',
+    },
+    {
+      id: 2,
+      type: 'PROFESIONAL',
+      description: 'Sou empresa prestadora de serviço',
+    },
+    {
+      id: 3,
+      type: 'COMPANY',
+      description: 'Sou autônomo(a) prestador(a) de serviço',
+    },
+  ];
 
   get workTypeIdControl(): AbstractControl | null {
     return this.form.get('workTypeId');
@@ -87,27 +106,8 @@ export class CreateAccountComponent extends ComponentBase implements OnInit {
     super();
   }
 
-  selectionChanged(event: CustomEvent, elementName?: string): void {
-    const selectedValue = event.detail.value;
-
-    if (elementName === 'userTypeIndex') {
-      this.userTypeIndexControl?.setValue(selectedValue);
-      if (event.detail.value > 0) {
-        this.workTypes$ = this.workTypeService.getForSelect();
-      }
-    } else {
-      this.workTypeIdControl?.setValue(selectedValue);
-    }
-  }
-
-  ngOnInit(): void {}
-
-  keyPress(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
-      this.isLoading = true;
-      this.workTypeIdControl?.setValue('');
-      this.workTypes$ = this.workTypeService.getForSelect(this.workType).pipe(tap(() => (this.isLoading = false)));
-    }
+  ngOnInit(): void {
+    this.loadWorkTypes();
   }
 
   submit(): void {
@@ -134,5 +134,27 @@ export class CreateAccountComponent extends ComponentBase implements OnInit {
 
   goToLogin(): void {
     this.router.navigate(['/auth/login']);
+  }
+
+  trackByFn(item: SelectListItem) {
+    return item.id;
+  }
+
+  private loadWorkTypes() {
+    console.log(12);
+    
+    this.workTypes$ = concat(
+      of([]),
+      this.workTypeInput$.pipe(
+        distinctUntilChanged(),
+        tap(() => (this.isWorkTypeLoading = true)),
+        switchMap((term) =>
+          this.workTypeService.getForSelect(term).pipe(
+            catchError(() => of([])),
+            tap(() => (this.isWorkTypeLoading = false))
+          )
+        )
+      )
+    );
   }
 }

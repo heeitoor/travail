@@ -30,6 +30,7 @@
     "@angular/platform-browser": "~11.2.14",
     "@angular/platform-browser-dynamic": "~11.2.14",
     "@angular/router": "~11.2.14",
+    "@ng-select/ng-select": "6.1.0",
     "@vaadin/vaadin-button": "^20.0.0",
     "@vaadin/vaadin-checkbox": "^20.0.0",
     "@vaadin/vaadin-combo-box": "^20.0.0",

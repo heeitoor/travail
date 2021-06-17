@@ -1,32 +1,35 @@
 <form *ngIf="state === 1" [formGroup]="form">
   <vaadin-progress-bar indeterminate value="0" *ngIf="isLoading"></vaadin-progress-bar>
   <vaadin-form-layout>
-    <vaadin-list-box
-      [selected]="form.get('userTypeIndex')?.value"
-      colspan="2"
-      (selected-changed)="selectionChanged($event, 'userTypeIndex')"
-    >
-      <vaadin-item value="CUSTOMER">Estou procurando um serviço</vaadin-item>
-      <vaadin-item value="PROFESIONAL">Sou empresa prestadora de serviço</vaadin-item>
-      <vaadin-item value="COMPANY">Sou autônomo(a) prestador(a) de serviço</vaadin-item>
-    </vaadin-list-box>
-    <ng-container *ngIf="form.get('userTypeIndex')?.value > 0">
-      <vaadin-text-field
-        colspan="2"
-        placeholder="Busque uma atividade"
-        formControlName="workType"
-        clear-button-visible
-        ngDefaultControl
-        (keypress)="keyPress($event)"
+    <p class="title">Preencha o formulário de cadastro!</p>
+    <div class="form-field" colspan="2">
+      <label class="label">Em qual perfil você se encaixa?</label>
+      <ng-select
+        [searchable]="false"
+        [clearable]="false"
+        [items]="userTypeList"
+        bindLabel="description"
+        bindValue="id"
+        formControlName="userType"
       >
-        <iron-icon icon="vaadin:search" slot="prefix"></iron-icon
-      ></vaadin-text-field>
-      <vaadin-list-box colspan="2" class="select-list-scroll" (selected-changed)="selectionChanged($event)">
-        <vaadin-item *ngFor="let workType of workTypes$ | async">
-          {{ workType.name }}
-        </vaadin-item>
-      </vaadin-list-box>
-    </ng-container>
+      </ng-select>
+    </div>
+    <div colspan="2" class="form-field" *ngIf="userTypeControl?.value > 1">
+      <label class="label">Selecione um tipo de trabalho</label>
+      <ng-select
+        [items]="(workTypes$ | async) || []"
+        bindLabel="name"
+        bindValue="id"
+        [hideSelected]="true"
+        [trackByFn]="trackByFn"
+        [minTermLength]="3"
+        [loading]="isWorkTypeLoading"
+        typeToSearchText="Busque e selecione um tipo de trabalho"
+        [typeahead]="workTypeInput$"
+        formControlName="workTypeId"
+      >
+      </ng-select>
+    </div>
     <vaadin-text-field
       colspan="2"
       formControlName="name"

@@ -7,6 +7,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { SecurityRoutingModule } from './security-routing.module';
 import { ActivateAccountComponent } from './activate-account/activate-account.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { CreateAccountComponent } from './create-account/create-account.componen
     ActivateAccountComponent,
     CreateAccountComponent,
   ],
-  imports: [CommonModule, SecurityRoutingModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, SecurityRoutingModule, FormsModule, ReactiveFormsModule, NgSelectModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   exports: [LoginComponent, RecoverComponent],
 })
